@@ -6,25 +6,26 @@ const STOCKFISH_PATH = `${__dirname}/stockfish`;
 const EngineInterface = require('./EngineInterface');
 const throttle = require('lodash').throttle;
 
-const engine = new EngineInterface(STOCKFISH_PATH);
-engine.initEngine();
-
-engine.on('data', throttle((buffer) => {
-  const data = engine.prepare(buffer.toString());
-  if (data) {
-    sender.send(JSON.stringify(data));
-    if (engine.delay <= data.time) {
-      console.log('worker->senderClose');
-      sender.close();
-    }
-  }
-}, 500));
 
 receiver.on('message', (data) => {
   const json = JSON.parse(data.toString());
   console.log('3.worker->onMessage', json.action);
   switch (json.action) {
     case 'findBestMove': {
+      const engine = new EngineInterface(STOCKFISH_PATH);
+      engine.initEngine();
+
+      engine.on('data', throttle((buffer) => {
+        const data = engine.prepare(buffer.toString());
+        if (data) {
+          sender.send(JSON.stringify(data));
+          if (engine.delay <= data.time) {
+            console.log('worker->senderClose');
+            delete engine;
+            sender.close();
+          }
+        }
+      }, 500));
       engine.findBestMove(json.fen, json.userId);
     }
   }
