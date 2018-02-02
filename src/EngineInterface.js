@@ -6,7 +6,7 @@ class EngineInterface {
     this.cmd = cmd;
     this.child = spawn(this.cmd, []);
     this.fen = '';
-    this.delay = 20 * 1000; // ms
+    this.delay = 60 * 1000; // ms
     this.multiPv = 1;
   }
 
