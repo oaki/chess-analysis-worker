@@ -6,7 +6,11 @@
   "license": "MIT",
   "homepage": "https://github.com/oaki/chess-analysis-worker",
   "scripts": {
-    "runWorker": "node src/worker.js"
+    "run:worker": "node src/worker.js",
+    "update:git": "git pull",
+    "download:stockfish": "git clone https://github.com/official-stockfish/Stockfish.git",
+    "make:stockfish": "cd ./Stockfish/src/; make build ARCH=x86-64",
+    "copy:stockfish": "cp ./Stockfish/src/stockfish ./src/"
   },
   "dependencies": {
     "eslint-config-airbnb": "^16.1.0",

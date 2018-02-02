@@ -6,12 +6,22 @@ class EngineInterface {
     this.cmd = cmd;
     this.child = spawn(this.cmd, []);
     this.fen = '';
-    this.delay = 60 * 1000; // ms
+    this.delay = 120 * 1000; // ms
     this.multiPv = 1;
+    this.syzygyPath = '';
+    this.threads = 1;
   }
 
   on(handler, callback) {
     this.child.stdout.on(handler, callback);
+  }
+
+  setThreads(threads) {
+    this.threads = Number(threads);
+  }
+
+  setSyzygyPath(syzygyPath) {
+    this.syzygyPath = syzygyPath;
   }
 
   setDelay(delay) {
@@ -52,8 +62,16 @@ class EngineInterface {
     this.send('eval');
     this.send('isready');
     this.send('ucinewgame');
-    this.send('setoption name ownbook value true');
+    this.send(`setoption name Threads value ${this.threads}`);
+    if (this.syzygyPath !== '') {
+      this.send(`setoption name SyzygyPath value ${this.syzygyPath}`);
+    }
+    this.send('setoption name ownbook value false');
     this.setMultiPv(this.multiPv);
+  }
+
+  killEngine() {
+    this.child.kill(9);
   }
 }
 

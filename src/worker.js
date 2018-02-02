@@ -5,24 +5,30 @@ const sender = zmq.socket('push');
 const STOCKFISH_PATH = `${__dirname}/stockfish`;
 const EngineInterface = require('./EngineInterface');
 const throttle = require('lodash').throttle;
-
+const os = require('os');
+const cpuCount = os.cpus().length;
 
 receiver.on('message', (data) => {
   const json = JSON.parse(data.toString());
   console.log('3.worker->onMessage', json.action);
   switch (json.action) {
     case 'findBestMove': {
+      console.log('findBestMove');
       const engine = new EngineInterface(STOCKFISH_PATH);
+      engine.setThreads(cpuCount || 1);
+      engine.setSyzygyPath(__dirname + '/../syzygy');
       engine.initEngine();
 
       engine.on('data', throttle((buffer) => {
+        console.log('Buffer', buffer.toString());
         const data = engine.prepare(buffer.toString());
         if (data) {
+
           sender.send(JSON.stringify(data));
-          if (engine.delay <= data.time) {
+          if (engine.delay <= Number(data[0].time)) {
             console.log('worker->senderClose');
+            engine.killEngine();
             delete engine;
-            sender.close();
           }
         }
       }, 500));
