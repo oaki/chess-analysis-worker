@@ -23,6 +23,7 @@ function parseLine(lineStr) {
   const nodes = pairValues('nodes', lineStr);
   const time = pairValues('time', lineStr);
   const nps = pairValues('nps', lineStr);
+  const tbhits = pairValues('tbhits', lineStr);
 
   return {
     mate,
@@ -33,6 +34,7 @@ function parseLine(lineStr) {
     nodes,
     time,
     nps,
+    tbhits,
   };
 }
 

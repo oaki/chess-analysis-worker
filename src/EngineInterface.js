@@ -40,6 +40,7 @@ class EngineInterface {
     this.userId = userId;
     this.send(`position fen ${fen}`);
     this.send(`go movetime ${this.delay}`);
+    this.send(`d`);
   }
 
   send(cmd) {

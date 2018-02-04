@@ -1,5 +1,4 @@
 const zmq = require('zeromq');
-const config = require('./config');
 const receiver = zmq.socket('pull');
 const sender = zmq.socket('push');
 const STOCKFISH_PATH = `${__dirname}/stockfish`;
@@ -7,6 +6,13 @@ const EngineInterface = require('./EngineInterface');
 const throttle = require('lodash').throttle;
 const os = require('os');
 const cpuCount = os.cpus().length;
+const isDev = process.argv.indexOf('env=dev') !== -1;
+const config = isDev ? require('./config/dev') : require('./config/prod');
+
+if(isDev){
+  console.log('Dev');
+  console.log(config);
+}
 
 receiver.on('message', (data) => {
   const json = JSON.parse(data.toString());

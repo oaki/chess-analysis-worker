@@ -1,0 +1,15 @@
+# Created by .ignore support plugin (hsz.mobi)
+### macOS template
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+.idea/chess-analysis-worker.iml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+Stockfish/
+node_modules/
