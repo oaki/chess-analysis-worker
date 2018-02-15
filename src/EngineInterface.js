@@ -10,6 +10,7 @@ class EngineInterface {
     this.multiPv = 1;
     this.syzygyPath = '';
     this.threads = 1;
+    this.hash = 1024;
   }
 
   on(handler, callback) {
@@ -18,6 +19,10 @@ class EngineInterface {
 
   setThreads(threads) {
     this.threads = Number(threads);
+  }
+
+  setHash(size) {
+    this.hash = Number(size);
   }
 
   setSyzygyPath(syzygyPath) {
@@ -49,6 +54,7 @@ class EngineInterface {
   }
 
   prepare(result) {
+    console.log('prepare->result', result);
     const obj = tools.parseResult(result);
     if (obj && obj[0]) {
       obj[0].userId = this.userId;
@@ -64,6 +70,7 @@ class EngineInterface {
     this.send('isready');
     this.send('ucinewgame');
     this.send(`setoption name Threads value ${this.threads}`);
+    this.send(`setoption name Hash value ${this.hash}`);
     if (this.syzygyPath !== '') {
       this.send(`setoption name SyzygyPath value ${this.syzygyPath}`);
     }

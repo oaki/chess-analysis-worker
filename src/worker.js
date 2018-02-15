@@ -8,6 +8,7 @@ const os = require('os');
 const cpuCount = os.cpus().length;
 const isDev = process.argv.indexOf('env=dev') !== -1;
 const config = isDev ? require('./config/dev') : require('./config/prod');
+const tools = require('./tools');
 
 if(isDev){
   console.log('Dev');
@@ -29,15 +30,15 @@ receiver.on('message', (data) => {
         console.log('Buffer', buffer.toString());
         const data = engine.prepare(buffer.toString());
         if (data) {
-
+console.log('dataaa',data);
           sender.send(JSON.stringify(data));
-          if (engine.delay <= Number(data[0].time)) {
+          if (engine.delay <= Number(data[0][tools.LINE_MAP.time])) {
             console.log('worker->senderClose');
             engine.killEngine();
             delete engine;
           }
         }
-      }, 500));
+      }, 1000));
       engine.findBestMove(json.fen, json.userId);
     }
   }

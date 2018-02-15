@@ -14,28 +14,33 @@ function pairValues(name, str) {
   return tmp[namePosition + 1];
 }
 
-function parseLine(lineStr) {
-  const mate = pairValues('mate', lineStr);
-  const score = parseFloat(pairValues('cp', lineStr)) / 100;
-  const depth = pairValues('depth', lineStr);
-  const pv = pairValues('pv', lineStr);
-  const multipv = pairValues('multipv', lineStr);
-  const nodes = pairValues('nodes', lineStr);
-  const time = pairValues('time', lineStr);
-  const nps = pairValues('nps', lineStr);
-  const tbhits = pairValues('tbhits', lineStr);
+const LINE_MAP = {
+  mate: 'm',
+  score: 's',
+  depth: 'd',
+  pv: 'p',
+  multipv: 'u',
+  nodes: 'n',
+  time: 't',
+  nps: 'c',
+  tbhits: 'h',
+}
 
-  return {
-    mate,
-    score,
-    depth,
-    pv,
-    multipv,
-    nodes,
-    time,
-    nps,
-    tbhits,
-  };
+function parseLine(lineStr) {
+  const obj = {};
+  console.log('lineStr->', lineStr);
+  obj[LINE_MAP.mate] = pairValues('mate', lineStr); // mate
+  obj[LINE_MAP.score] = parseFloat(pairValues('cp', lineStr)) / 100; //score
+  obj[LINE_MAP.depth] = pairValues('depth', lineStr);
+  obj[LINE_MAP.pv] = pairValues('pv', lineStr);
+  obj[LINE_MAP.multipv] = pairValues('multipv', lineStr);
+  obj[LINE_MAP.nodes] = pairValues('nodes', lineStr);
+  obj[LINE_MAP.time] = pairValues('time', lineStr);
+  obj[LINE_MAP.nps] = pairValues('nps', lineStr);
+  obj[LINE_MAP.tbhits] = pairValues('tbhits', lineStr);
+
+  console.log('lineStr->Obj', obj);
+  return obj;
 }
 
 
@@ -54,7 +59,7 @@ function parseResult(result) {
 
   lines.forEach((line) => {
     const r = parseLine(line);
-    output[parseInt(r.multipv) - 1] = r;
+    output[parseInt(r[LINE_MAP.multipv]) - 1] = r;
   });
   return output;
 }
@@ -66,3 +71,4 @@ function getFirstMove(pv) {
 exports.parseLine = parseLine;
 exports.parseResult = parseResult;
 exports.getFirstMove = getFirstMove;
+exports.LINE_MAP = LINE_MAP;
