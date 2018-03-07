@@ -10,7 +10,7 @@ class EngineInterface {
     this.multiPv = 1;
     this.syzygyPath = '';
     this.threads = 1;
-    this.hash = 1024;
+    this.hash = 512;
   }
 
   on(handler, callback) {
