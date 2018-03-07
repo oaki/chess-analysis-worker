@@ -7,10 +7,11 @@ const throttle = require('lodash').throttle;
 const os = require('os');
 const cpuCount = os.cpus().length;
 const isDev = process.argv.indexOf('env=dev') !== -1;
+console.log('isDev', isDev);
 const config = isDev ? require('./config/dev') : require('./config/prod');
 const tools = require('./tools');
 
-if(isDev){
+if (isDev) {
   console.log('Dev');
   console.log(config);
 }
@@ -23,6 +24,10 @@ receiver.on('message', (data) => {
       console.log('findBestMove');
       const engine = new EngineInterface(STOCKFISH_PATH);
       engine.setThreads(cpuCount || 1);
+
+      if (isDev) {
+        engine.setDelay(30000);
+      }
       engine.setSyzygyPath(__dirname + '/../syzygy');
       engine.initEngine();
 
@@ -30,7 +35,7 @@ receiver.on('message', (data) => {
         console.log('Buffer', buffer.toString());
         const data = engine.prepare(buffer.toString());
         if (data) {
-console.log('dataaa',data);
+          console.log('dataaa', data);
           sender.send(JSON.stringify(data));
           if (engine.delay <= Number(data[0][tools.LINE_MAP.time])) {
             console.log('worker->senderClose');

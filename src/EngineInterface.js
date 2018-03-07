@@ -71,6 +71,7 @@ class EngineInterface {
     this.send('ucinewgame');
     this.send(`setoption name Threads value ${this.threads}`);
     this.send(`setoption name Hash value ${this.hash}`);
+    this.send(`setoption name UCI_AnalyseMode value true`);
     if (this.syzygyPath !== '') {
       this.send(`setoption name SyzygyPath value ${this.syzygyPath}`);
     }

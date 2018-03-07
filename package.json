@@ -9,6 +9,7 @@
     "worker:start": "node src/worker.js",
     "worker:start:dev": "node src/worker.js env=dev",
     "git:update": "git pull",
+    "test": "git pull",
     "stockfish:download": "rm -rf Stockfish && git clone https://github.com/official-stockfish/Stockfish.git",
     "stockfish:make": "cd ./Stockfish/src/; make build ARCH=x86-64",
     "stockfish:copy": "cp ./Stockfish/src/stockfish ./src/",
