@@ -1,13 +1,12 @@
 {
   "name": "chess-analysis-worker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Free online chess analysis worker",
   "author": "Pavol Bincik",
   "license": "MIT",
   "homepage": "https://github.com/oaki/chess-analysis-worker",
   "scripts": {
-    "worker:start": "node src/worker.js",
-    "worker:start:dev": "node src/worker.js env=dev",
+    "worker:start": "node src/socketWorker.js",
     "git:update": "git pull",
     "test": "git pull",
     "stockfish:download": "rm -rf Stockfish && git clone https://github.com/official-stockfish/Stockfish.git",
@@ -16,10 +15,13 @@
     "stockfish:install": "npm run stockfish:download && npm run stockfish:make && npm run stockfish:copy"
   },
   "dependencies": {
+    "dotenv": "^5.0.1",
     "eslint-config-airbnb": "^16.1.0",
     "lodash": "^4.17.4",
     "redis": "^2.8.0",
     "redis-connection": "^5.4.0",
+    "socket.io-client": "^2.1.1",
+    "uuid": "^3.2.1",
     "zeromq": "^4.6.0"
   },
   "devDependencies": {
