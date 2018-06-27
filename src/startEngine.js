@@ -6,23 +6,23 @@ const os = require('os');
 const cpuCount = os.cpus().length;
 const tools = require('./tools');
 
-const startEngine = (socket, onResultCallback) => {
+const startEngine = (fen, socket, onResultCallback) => {
   const engine = new EngineInterface(STOCKFISH_PATH);
 
   engine.setThreads(cpuCount || 1);
-
-  if (config.environment === 'development') {
-    engine.setDelay(30000);
-  }
   engine.setSyzygyPath(__dirname + '/../syzygy');
+  engine.setDelay(30000);
   engine.initEngine();
 
   engine.on('data', throttle((buffer) => {
     console.log('Buffer', buffer.toString());
     const data = engine.prepare(buffer.toString());
     if (data) {
+
       console.log('workerEvaluation', data);
+
       onResultCallback(data);
+
       if (engine.delay <= Number(data[0][tools.LINE_MAP.time])) {
         console.log('worker->senderClose');
         engine.killEngine();
@@ -30,6 +30,9 @@ const startEngine = (socket, onResultCallback) => {
       }
     }
   }, 1000));
+
+  // @todo put user id
+  engine.findBestMove(fen, 1);
 }
 
 module.exports = startEngine;

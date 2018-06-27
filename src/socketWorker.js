@@ -27,12 +27,10 @@ socket.on('setPositionToWorker', (data) => {
 
   console.log('setPositionToWorker', data);
 
-  startEngine(socket, (data) => {
+  startEngine(data.FEN, socket, (data) => {
     socket.emit('workerEvaluation', JSON.stringify(data));
   });
 
-  // @todo put user id
-  engine.findBestMove(data.FEN, 1);
 });
 
 
