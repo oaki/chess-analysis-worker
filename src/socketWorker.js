@@ -28,6 +28,7 @@ socket.on('setPositionToWorker', (data) => {
   console.log('setPositionToWorker', data);
 
   startEngine(data.FEN, socket, (data) => {
+    console.log('workerEvaluation', JSON.stringify(data));
     socket.emit('workerEvaluation', JSON.stringify(data));
   });
 

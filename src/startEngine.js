@@ -7,6 +7,7 @@ const cpuCount = os.cpus().length;
 const tools = require('./tools');
 
 const startEngine = (fen, socket, onResultCallback) => {
+  console.log('start engine, fen=', fen);
   const engine = new EngineInterface(STOCKFISH_PATH);
 
   engine.setThreads(cpuCount || 1);
@@ -15,7 +16,7 @@ const startEngine = (fen, socket, onResultCallback) => {
   engine.initEngine();
 
   engine.on('data', throttle((buffer) => {
-    console.log('Buffer', buffer.toString());
+    console.log('on->data', buffer.toString());
     const data = engine.prepare(buffer.toString());
     if (data) {
 
