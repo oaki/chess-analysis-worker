@@ -68,7 +68,41 @@ function getFirstMove(pv) {
   return pv.substr(0, 4);
 }
 
+
+function comparePv(prevPv, currentPv) {
+  if (!prevPv) {
+    return currentPv;
+  }
+
+  if (!currentPv) {
+    return prevPv;
+  }
+
+
+  if (prevPv === currentPv) {
+    return currentPv;
+  }
+
+  console.log('prevPv', prevPv, 'currentPv', currentPv);
+  const length = prevPv.length < currentPv.length ? prevPv.length : currentPv.length;
+
+  let isSame = true;
+  for (let i = 0; i < length; i++) {
+    if (prevPv[i] !== currentPv[i]) {
+      isSame = false;
+      break;
+    }
+  }
+
+  if (isSame) {
+    return prevPv.length < currentPv.length ? currentPv : prevPv;
+  } else {
+    return currentPv;
+  }
+}
+
 exports.parseLine = parseLine;
 exports.parseResult = parseResult;
 exports.getFirstMove = getFirstMove;
+exports.comparePv = comparePv;
 exports.LINE_MAP = LINE_MAP;

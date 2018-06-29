@@ -1,3 +1,4 @@
+const config = require('./config');
 const STOCKFISH_PATH = `${__dirname}/stockfish`;
 const EngineInterface = require('./EngineInterface');
 const throttle = require('lodash').throttle;
@@ -12,17 +13,32 @@ const startEngine = (fen, socket, onResultCallback) => {
 
   engine.setThreads(cpuCount || 1);
   engine.setSyzygyPath(__dirname + '/../syzygy');
-  engine.setDelay(1200000);
+
+  if (config.environment === 'development') {
+    engine.setDelay(20000);
+  } else {
+    engine.setDelay(120000);
+  }
+
   engine.initEngine();
 
-  engine.on('data', throttle((buffer) => {
+  let lastPvs = {};
+
+  engine.on('data', ((buffer) => {
     console.log('on->data', buffer.toString());
     const data = engine.prepare(buffer.toString());
     if (data) {
 
-      console.log('workerEvaluation', data);
+      const dataWithUpdatedPv = data.map((evaluation, index) => {
+        if (evaluation[tools.LINE_MAP.pv]) {
+          lastPvs[index] = evaluation[tools.LINE_MAP.pv] = tools.comparePv(lastPvs[index], evaluation[tools.LINE_MAP.pv]);
+          return evaluation;
+        }
+      })
 
-      onResultCallback(data);
+      console.log('workerEvaluation', dataWithUpdatedPv);
+
+      onResultCallback(dataWithUpdatedPv);
 
       if (engine.delay <= Number(data[0][tools.LINE_MAP.time])) {
         console.log('worker->senderClose');
@@ -30,7 +46,7 @@ const startEngine = (fen, socket, onResultCallback) => {
         delete engine;
       }
     }
-  }, 1000));
+  }));
 
   // @todo put user id
   engine.findBestMove(fen, 1);
