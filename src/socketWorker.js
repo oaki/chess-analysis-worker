@@ -22,12 +22,17 @@ socket.on('connect', function (app) {
   console.log('connected->socket.id', socket.id);
 });
 
+let currentEngine;
 
 socket.on('setPositionToWorker', (data) => {
 
   console.log('setPositionToWorker', data);
 
-  startEngine(data.FEN, socket, (data) => {
+  if (currentEngine && currentEngine.killEngine) {
+    console.log('killEngine');
+    currentEngine.killEngine();
+  }
+  currentEngine = startEngine(data.FEN, socket, (data) => {
     console.log('workerEvaluation', JSON.stringify(data));
     socket.emit('workerEvaluation', JSON.stringify(data));
   });

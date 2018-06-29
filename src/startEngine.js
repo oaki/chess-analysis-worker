@@ -12,7 +12,7 @@ const startEngine = (fen, socket, onResultCallback) => {
 
   engine.setThreads(cpuCount || 1);
   engine.setSyzygyPath(__dirname + '/../syzygy');
-  engine.setDelay(30000);
+  engine.setDelay(1200000);
   engine.initEngine();
 
   engine.on('data', throttle((buffer) => {
@@ -34,6 +34,8 @@ const startEngine = (fen, socket, onResultCallback) => {
 
   // @todo put user id
   engine.findBestMove(fen, 1);
+
+  return engine;
 }
 
 module.exports = startEngine;
