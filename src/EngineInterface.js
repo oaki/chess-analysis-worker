@@ -76,6 +76,7 @@ class EngineInterface {
       this.send(`setoption name SyzygyPath value ${this.syzygyPath}`);
     }
     this.send('setoption name ownbook value false');
+    this.send('setoption name Ponder value false');
     this.setMultiPv(this.multiPv);
   }
 
