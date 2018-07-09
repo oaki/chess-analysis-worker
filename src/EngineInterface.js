@@ -1,14 +1,14 @@
-const spawn = require('child_process').spawn;
-const tools = require('./tools');
+const spawn = require("child_process").spawn;
+const tools = require("./tools");
 
 class EngineInterface {
   constructor(cmd) {
     this.cmd = cmd;
     this.child = spawn(this.cmd, []);
-    this.fen = '';
+    this.fen = "";
     this.delay = 120 * 1000; // ms
     this.multiPv = 1;
-    this.syzygyPath = '';
+    this.syzygyPath = "";
     this.threads = 1;
     this.hash = 512;
   }
@@ -30,7 +30,7 @@ class EngineInterface {
   }
 
   setDelay(delay) {
-    console.log('setDelay', delay);
+    console.log("setDelay", delay);
     this.delay = delay;
   }
 
@@ -54,7 +54,7 @@ class EngineInterface {
   }
 
   prepare(result) {
-    console.log('prepare->result', result);
+    console.log("prepare->result", result);
     const obj = tools.parseResult(result);
     if (obj && obj[0]) {
       obj[0].userId = this.userId;
@@ -65,23 +65,23 @@ class EngineInterface {
   }
 
   initEngine() {
-    this.send('uci');
-    this.send('eval');
-    this.send('isready');
-    this.send('ucinewgame');
+    this.send("uci");
+    this.send("eval");
+    this.send("isready");
+    this.send("ucinewgame");
     this.send(`setoption name Threads value ${this.threads}`);
     this.send(`setoption name Hash value ${this.hash}`);
     this.send(`setoption name UCI_AnalyseMode value true`);
-    if (this.syzygyPath !== '') {
+    if (this.syzygyPath !== "") {
       this.send(`setoption name SyzygyPath value ${this.syzygyPath}`);
     }
-    this.send('setoption name ownbook value false');
-    this.send('setoption name Ponder value false');
+    this.send("setoption name ownbook value false");
+    this.send("setoption name Ponder value false");
     this.setMultiPv(this.multiPv);
   }
 
   killEngine() {
-    this.child.kill(9);
+    this.child.kill("SIGINT");
   }
 }
 

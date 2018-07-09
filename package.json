@@ -7,6 +7,7 @@
   "homepage": "https://github.com/oaki/chess-analysis-worker",
   "scripts": {
     "worker:start": "node src/socketWorker.js",
+    "worker:start:dev": "node -r dotenv/config src/socketWorker.js dotenv_config_path=./.env-dev",
     "git:update": "git pull",
     "test": "git pull",
     "stockfish:download": "rm -rf Stockfish && git clone https://github.com/official-stockfish/Stockfish.git",
