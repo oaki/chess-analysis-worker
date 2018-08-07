@@ -21,7 +21,8 @@ class EngineInterface {
     this.threads = Number(threads);
   }
 
-  setHash(size) {
+  setHashSize(size) {
+    console.log("setHashSize", Number(size));
     this.hash = Number(size);
   }
 
@@ -35,14 +36,12 @@ class EngineInterface {
   }
 
   setMultiPv(multiPv) {
-    // console.log('setMultiPv');
     this.multiPv = multiPv;
     this.send(`setoption name multipv value ${multiPv}`);
   }
 
-  findBestMove(fen, userId) {
+  findBestMove(fen) {
     this.fen = fen;
-    this.userId = userId;
     this.send(`position fen ${fen}`);
     this.send(`go movetime ${this.delay}`);
     this.send(`d`);
@@ -57,7 +56,6 @@ class EngineInterface {
     console.log("prepare->result", result);
     const obj = tools.parseResult(result);
     if (obj && obj[0]) {
-      obj[0].userId = this.userId;
       obj[0].fen = this.fen;
     }
 

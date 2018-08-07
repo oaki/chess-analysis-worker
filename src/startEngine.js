@@ -1,31 +1,54 @@
-const config = require('./config');
+const config = require("./config");
 const STOCKFISH_PATH = `${__dirname}/stockfish`;
-const EngineInterface = require('./EngineInterface');
-const throttle = require('lodash').throttle;
+const EngineInterface = require("./EngineInterface");
+const throttle = require("lodash").throttle;
 
-const os = require('os');
+const os = require("os");
 const cpuCount = os.cpus().length;
-const tools = require('./tools');
+const tools = require("./tools");
+
+function checkIfEvaluationIsSufficient(engine, data) {
+  const evaluation = data[0];
+  const time = Number(evaluation[tools.LINE_MAP.time]);
+  if (engine.delay <= time) {
+    return true;
+  }
+
+  const score = Math.abs(Number(evaluation[tools.LINE_MAP.score]));
+  const depth = Number(evaluation[tools.LINE_MAP.depth]);
+  const isMate = Number(evaluation[tools.LINE_MAP.mate]);
+
+  console.log({score, depth, time, isMate});
+
+  if (isMate && time > 3 * 1000) {
+    return true;
+  }
+
+  if (!isMate && score > 4 && depth > 20 && time > 3 * 1000) {
+    return true;
+  }
+
+  return false;
+}
 
 const startEngine = (fen, socket, onResultCallback) => {
-  console.log('start engine, fen=', fen);
+  console.log("start engine, fen=", fen);
   const engine = new EngineInterface(STOCKFISH_PATH);
 
   engine.setThreads(cpuCount || 1);
-  engine.setSyzygyPath(__dirname + '/../syzygy');
+  console.log("syzygy path", __dirname + "/../syzygy");
+  engine.setSyzygyPath(__dirname + "/../syzygy");
 
-  if (config.environment === 'development') {
-    engine.setDelay(20000);
-  } else {
-    engine.setDelay(120000);
-  }
+  engine.setDelay(config.maxTime);
+
+  engine.setHashSize(config.hashSize);
 
   engine.initEngine();
 
   let lastPvs = {};
 
-  engine.on('data', ((buffer) => {
-    console.log('on->data', buffer.toString());
+  engine.on("data", ((buffer) => {
+    console.log("on->data", buffer.toString());
     const data = engine.prepare(buffer.toString());
     if (data) {
 
@@ -36,20 +59,19 @@ const startEngine = (fen, socket, onResultCallback) => {
         }
       })
 
-      console.log('workerEvaluation', dataWithUpdatedPv);
+      console.log("workerEvaluation", dataWithUpdatedPv);
 
       onResultCallback(dataWithUpdatedPv);
 
-      if (engine.delay <= Number(data[0][tools.LINE_MAP.time])) {
-        console.log('worker->senderClose');
+      if (checkIfEvaluationIsSufficient(engine, data)) {
+        console.log("worker->senderClose", data);
         engine.killEngine();
         delete engine;
       }
     }
   }));
 
-  // @todo put user id
-  engine.findBestMove(fen, 1);
+  engine.findBestMove(fen);
 
   return engine;
 }
