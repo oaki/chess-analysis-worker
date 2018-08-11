@@ -27,7 +27,7 @@ class EngineInterface {
   }
 
   setSyzygyPath(syzygyPath) {
-    this.syzygyPath = syzygyPath;
+    this.syzygyPath = `${syzygyPath}`;
   }
 
   setDelay(delay) {

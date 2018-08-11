@@ -36,8 +36,8 @@ const startEngine = (fen, socket, onResultCallback) => {
   const engine = new EngineInterface(STOCKFISH_PATH);
 
   engine.setThreads(cpuCount || 1);
-  console.log("syzygy path", __dirname + "/../syzygy");
-  engine.setSyzygyPath(__dirname + "/../syzygy");
+
+  engine.setSyzygyPath(config.syzygyPath);
 
   engine.setDelay(config.maxTime);
 
