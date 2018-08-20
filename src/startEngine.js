@@ -31,8 +31,7 @@ function checkIfEvaluationIsSufficient(engine, data) {
   return false;
 }
 
-const startEngine = (fen, socket, onResultCallback) => {
-  console.log("start engine, fen=", fen);
+const startEngine = (onResultCallback) => {
   const engine = new EngineInterface(STOCKFISH_PATH);
 
   engine.setThreads(cpuCount || 1);
@@ -63,15 +62,13 @@ const startEngine = (fen, socket, onResultCallback) => {
 
       onResultCallback(dataWithUpdatedPv);
 
-      if (checkIfEvaluationIsSufficient(engine, data)) {
-        console.log("worker->senderClose", data);
-        engine.killEngine();
-        delete engine;
-      }
+      // if (checkIfEvaluationIsSufficient(engine, data)) {
+      //   console.log("worker->senderClose", data);
+      //   engine.killEngine();
+      //   delete engine;
+      // }
     }
   }));
-
-  engine.findBestMove(fen);
 
   return engine;
 }

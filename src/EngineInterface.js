@@ -40,11 +40,18 @@ class EngineInterface {
     this.send(`setoption name multipv value ${multiPv}`);
   }
 
-  findBestMove(fen) {
+  setPosition(fen){
     this.fen = fen;
     this.send(`position fen ${fen}`);
+  }
+
+  go(){
     this.send(`go movetime ${this.delay}`);
-    this.send(`d`);
+    // this.send(`d`);
+  }
+
+  stop(){
+    this.send('stop');
   }
 
   send(cmd) {
@@ -66,10 +73,10 @@ class EngineInterface {
     this.send("uci");
     this.send("eval");
     this.send("isready");
-    this.send("ucinewgame");
+    // this.send("ucinewgame");
     this.send(`setoption name Threads value ${this.threads}`);
     this.send(`setoption name Hash value ${this.hash}`);
-    this.send(`setoption name UCI_AnalyseMode value true`);
+    // this.send(`setoption name UCI_AnalyseMode value true`);
     if (this.syzygyPath !== "") {
       this.send(`setoption name SyzygyPath value ${this.syzygyPath}`);
     }
