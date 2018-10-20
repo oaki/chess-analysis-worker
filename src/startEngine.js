@@ -47,7 +47,7 @@ const startEngine = (onResultCallback) => {
   let lastPvs = {};
 
   engine.on("data", ((buffer) => {
-    console.log("on->data", buffer.toString());
+    // console.log("on->data", buffer.toString());
     const data = engine.prepare(buffer.toString());
     if (data) {
 
@@ -58,7 +58,7 @@ const startEngine = (onResultCallback) => {
         }
       })
 
-      console.log("workerEvaluation", dataWithUpdatedPv);
+      // console.log("workerEvaluation", dataWithUpdatedPv);
 
       onResultCallback(dataWithUpdatedPv);
 
