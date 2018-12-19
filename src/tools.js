@@ -45,7 +45,6 @@ function parseLine(lineStr) {
 
 
 function parseResult(result) {
-  // console.log('result', result);
   if (result.indexOf('info') === -1) {
     return false;
   }
@@ -83,7 +82,6 @@ function comparePv(prevPv, currentPv) {
     return currentPv;
   }
 
-  console.log('prevPv', prevPv, 'currentPv', currentPv);
   const length = prevPv.length < currentPv.length ? prevPv.length : currentPv.length;
 
   let isSame = true;
