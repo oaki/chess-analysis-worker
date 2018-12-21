@@ -16,14 +16,14 @@
     "stockfish:install": "npm run stockfish:download && npm run stockfish:make && npm run stockfish:copy"
   },
   "dependencies": {
-    "dotenv": "^5.0.1",
+    "dotenv": "^6.2.0",
     "lodash": "^4.17.4",
-    "socket.io-client": "^2.1.1",
+    "socket.io-client": "^2.2.0",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "eslint": "^4.16.0",
-    "eslint-config-airbnb": "^16.1.0",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.6.1"
