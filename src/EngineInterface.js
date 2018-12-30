@@ -40,18 +40,18 @@ class EngineInterface {
     this.send(`setoption name multipv value ${multiPv}`);
   }
 
-  setPosition(fen){
+  setPosition(fen) {
     this.fen = fen;
     this.send(`position fen ${fen}`);
   }
 
-  go(){
+  go() {
     this.send(`go movetime ${this.delay}`);
     // this.send(`d`);
   }
 
-  stop(){
-    this.send('stop');
+  stop() {
+    this.send("stop");
   }
 
   send(cmd) {

@@ -56,7 +56,7 @@ const startEngine = (onResultCallback) => {
           lastPvs[index] = evaluation[tools.LINE_MAP.pv] = tools.comparePv(lastPvs[index], evaluation[tools.LINE_MAP.pv]);
           return evaluation;
         }
-      })
+      });
 
       // console.log("workerEvaluation", dataWithUpdatedPv);
 
@@ -71,6 +71,6 @@ const startEngine = (onResultCallback) => {
   }));
 
   return engine;
-}
+};
 
 module.exports = startEngine;

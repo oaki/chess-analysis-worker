@@ -1,5 +1,5 @@
 function pairValues(name, str) {
-  const tmp = str.split(' ');
+  const tmp = str.split(" ");
 
   const namePosition = tmp.indexOf(name);
 
@@ -7,49 +7,49 @@ function pairValues(name, str) {
     return false;
   }
 
-  if (name === 'pv') {
+  if (name === "pv") {
     const tmpArr = tmp.splice(namePosition + 1);
-    return tmpArr.join(' ');
+    return tmpArr.join(" ");
   }
   return tmp[namePosition + 1];
 }
 
 const LINE_MAP = {
-  mate: 'm',
-  score: 's',
-  depth: 'd',
-  pv: 'p',
-  multipv: 'u',
-  nodes: 'n',
-  time: 't',
-  nps: 'c',
-  tbhits: 'h',
-}
+  mate: "m",
+  score: "s",
+  depth: "d",
+  pv: "p",
+  multipv: "u",
+  nodes: "n",
+  time: "t",
+  nps: "c",
+  tbhits: "h",
+};
 
 function parseLine(lineStr) {
   const obj = {};
-  console.log('lineStr->', lineStr);
-  obj[LINE_MAP.mate] = pairValues('mate', lineStr); // mate
-  obj[LINE_MAP.score] = parseFloat(pairValues('cp', lineStr)) / 100; //score
-  obj[LINE_MAP.depth] = pairValues('depth', lineStr);
-  obj[LINE_MAP.pv] = pairValues('pv', lineStr);
-  obj[LINE_MAP.multipv] = pairValues('multipv', lineStr);
-  obj[LINE_MAP.nodes] = pairValues('nodes', lineStr);
-  obj[LINE_MAP.time] = pairValues('time', lineStr);
-  obj[LINE_MAP.nps] = pairValues('nps', lineStr);
-  obj[LINE_MAP.tbhits] = pairValues('tbhits', lineStr);
+  console.log("lineStr->", lineStr);
+  obj[LINE_MAP.mate] = pairValues("mate", lineStr); // mate
+  obj[LINE_MAP.score] = parseFloat(pairValues("cp", lineStr)) / 100; //score
+  obj[LINE_MAP.depth] = pairValues("depth", lineStr);
+  obj[LINE_MAP.pv] = pairValues("pv", lineStr);
+  obj[LINE_MAP.multipv] = pairValues("multipv", lineStr);
+  obj[LINE_MAP.nodes] = pairValues("nodes", lineStr);
+  obj[LINE_MAP.time] = pairValues("time", lineStr);
+  obj[LINE_MAP.nps] = pairValues("nps", lineStr);
+  obj[LINE_MAP.tbhits] = pairValues("tbhits", lineStr);
 
-  console.log('lineStr->Obj', obj);
+  console.log("lineStr->Obj", obj);
   return obj;
 }
 
 
 function parseResult(result) {
-  if (result.indexOf('info') === -1) {
+  if (result.indexOf("info") === -1) {
     return false;
   }
-  let lines = result.split('\n');
-  lines = lines.filter(line => line.indexOf('info') !== -1 && line.indexOf('pv') !== -1);
+  let lines = result.split("\n");
+  lines = lines.filter(line => line.indexOf("info") !== -1 && line.indexOf("pv") !== -1);
   if (lines.length < 1) {
     return false;
   }
