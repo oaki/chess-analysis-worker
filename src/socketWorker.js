@@ -34,7 +34,10 @@ socket.on("setPositionToWorker", (data) => {
   //   console.log('killEngine');
   //   currentEngine.killEngine();
   // }
-  currentEngine.stop();
+
+
+
+  // currentEngine.stop();
   currentEngine.setPosition(data.FEN);
   currentEngine.go();
 });
