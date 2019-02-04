@@ -22,8 +22,9 @@ socket.on("connect", function (app) {
 });
 
 const emitData = debounce((data)=>{
-  console.log("socket.emit->workerEvaluation", JSON.stringify(data));
-  socket.emit("workerEvaluation", JSON.stringify(data));
+  // console.log("socket.emit->workerEvaluation", JSON.stringify(data));
+  socket.emit("workerEvaluation", 'workerEvaluation FROM WORKER');
+  // socket.emit("workerEvaluation", JSON.stringify(data));
 }, 1000);
 
 let currentEngine = startEngine((data) => {
