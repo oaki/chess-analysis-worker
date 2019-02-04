@@ -47,8 +47,8 @@ socket.on("setPositionToWorker", (data) => {
 
 
   // currentEngine.stop();
-  currentEngine.setPosition(data.FEN);
-  currentEngine.go();
+  // currentEngine.setPosition(data.FEN);
+  // currentEngine.go();
 });
 
 
