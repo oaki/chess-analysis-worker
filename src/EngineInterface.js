@@ -11,6 +11,14 @@ class EngineInterface {
     this.syzygyPath = "";
     this.threads = 1;
     this.hash = 512;
+
+    this.child.stderr.on('data', (data) => {
+      console.log(`stderr: ${data}`);
+    });
+
+    this.child.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
   }
 
   on(handler, callback) {

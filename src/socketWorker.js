@@ -11,19 +11,19 @@ const socket = io(config.api.host, {
     token: uuid,
     type: "worker"
   },
-  // reconnection: true,
-  // reconnectionDelay: 1000,
-  // reconnectionDelayMax: 5000,
-  // reconnectionAttempts: 99999
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 99999
 });
 
 socket.on("connect", function (app) {
   console.log("connected->socket.id", socket.id);
 });
 
-const emitData = debounce((data)=>{
+const emitData = debounce((data) => {
   // console.log("socket.emit->workerEvaluation", JSON.stringify(data));
-  socket.emit("workerEvaluation", 'workerEvaluation FROM WORKER');
+  socket.emit("workerEvaluation", "workerEvaluation FROM WORKER");
   // socket.emit("workerEvaluation", JSON.stringify(data));
 }, 1000);
 
@@ -32,7 +32,7 @@ let currentEngine = startEngine((data) => {
 });
 
 socket.on("isReady", (uuid) => {
-  console.log('workerIsReady->isReady');
+  console.log("workerIsReady->isReady");
   socket.emit("workerIsReady", uuid);
 });
 
@@ -44,11 +44,10 @@ socket.on("setPositionToWorker", (data) => {
   //   currentEngine.killEngine();
   // }
 
-  socket.emit("workerIsReady", 'uuid');
-
   currentEngine.stop();
   currentEngine.setPosition(data.FEN);
   currentEngine.go();
+
 });
 
 
