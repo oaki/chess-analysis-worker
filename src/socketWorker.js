@@ -44,7 +44,7 @@ socket.on("setPositionToWorker", (data) => {
   //   currentEngine.killEngine();
   // }
 
-
+  socket.emit("workerIsReady", 'uuid');
 
   // currentEngine.stop();
   // currentEngine.setPosition(data.FEN);
