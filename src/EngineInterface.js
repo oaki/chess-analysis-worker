@@ -60,7 +60,6 @@ class EngineInterface {
   }
 
   prepare(result) {
-    console.log("prepare->result", result);
     const obj = tools.parseResult(result);
     if (obj && obj[0]) {
       obj[0].fen = this.fen;

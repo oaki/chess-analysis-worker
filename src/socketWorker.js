@@ -3,7 +3,7 @@ const config = require("./config");
 const io = require("socket.io-client");
 const uuid = require("./createUuid")();
 const startEngine = require("./startEngine");
-
+const debounce = require("lodash").debounce;
 console.log("config.api.host", config.api.host);
 
 const socket = io(config.api.host, {
@@ -21,9 +21,13 @@ socket.on("connect", function (app) {
   console.log("connected->socket.id", socket.id);
 });
 
-let currentEngine = startEngine((data) => {
+const emitData = debounce((data)=>{
   console.log("socket.emit->workerEvaluation", JSON.stringify(data));
   socket.emit("workerEvaluation", JSON.stringify(data));
+}, 1000);
+
+let currentEngine = startEngine((data) => {
+  emitData(data);
 });
 
 socket.on("setPositionToWorker", (data) => {
@@ -37,7 +41,7 @@ socket.on("setPositionToWorker", (data) => {
 
 
 
-  // currentEngine.stop();
+  currentEngine.stop();
   currentEngine.setPosition(data.FEN);
   currentEngine.go();
 });
