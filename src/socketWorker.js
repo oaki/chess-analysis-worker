@@ -30,6 +30,10 @@ let currentEngine = startEngine((data) => {
   emitData(data);
 });
 
+socket.on("isReady", (uuid) => {
+  socket.emit("workerIsReady", uuid);
+});
+
 socket.on("setPositionToWorker", (data) => {
 
   console.log("setPositionToWorker", data);
