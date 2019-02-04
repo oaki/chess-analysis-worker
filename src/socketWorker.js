@@ -11,10 +11,10 @@ const socket = io(config.api.host, {
     token: uuid,
     type: "worker"
   },
-  reconnection: true,
-  reconnectionDelay: 1000,
-  reconnectionDelayMax: 5000,
-  reconnectionAttempts: 99999
+  // reconnection: true,
+  // reconnectionDelay: 1000,
+  // reconnectionDelayMax: 5000,
+  // reconnectionAttempts: 99999
 });
 
 socket.on("connect", function (app) {
@@ -35,7 +35,6 @@ socket.on("isReady", (uuid) => {
 });
 
 socket.on("setPositionToWorker", (data) => {
-
   console.log("setPositionToWorker", data);
 
   // if (currentEngine && currentEngine.killEngine) {
@@ -45,14 +44,14 @@ socket.on("setPositionToWorker", (data) => {
 
 
 
-  currentEngine.stop();
+  // currentEngine.stop();
   currentEngine.setPosition(data.FEN);
   currentEngine.go();
 });
 
 
-socket.on("disconnect", function () {
-  console.log("disconnect");
+socket.on("disconnect", function (e) {
+  console.log("disconnect", e);
 });
 
 socket.on("error", function (error) {
