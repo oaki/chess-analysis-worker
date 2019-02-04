@@ -31,6 +31,7 @@ let currentEngine = startEngine((data) => {
 });
 
 socket.on("isReady", (uuid) => {
+  console.log('workerIsReady->isReady');
   socket.emit("workerIsReady", uuid);
 });
 
