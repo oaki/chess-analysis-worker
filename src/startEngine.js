@@ -8,7 +8,7 @@ const tools = require('./tools');
 
 const startEngine = (fen, socket, onResultCallback) => {
   console.log('start engine, fen=', fen);
-  const engine = new EngineInterface(STOCKFISH_PATH);
+  let engine = new EngineInterface(STOCKFISH_PATH);
 
   engine.setThreads(cpuCount || 1);
   engine.setSyzygyPath(__dirname + '/../syzygy');
