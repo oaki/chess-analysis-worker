@@ -1,16 +1,24 @@
-const spawn = require('child_process').spawn;
-const tools = require('./tools');
+const spawn = require("child_process").spawn;
+const tools = require("./tools");
 
 class EngineInterface {
   constructor(cmd) {
     this.cmd = cmd;
     this.child = spawn(this.cmd, []);
-    this.fen = '';
+    this.fen = "";
     this.delay = 120 * 1000; // ms
     this.multiPv = 1;
-    this.syzygyPath = '';
+    this.syzygyPath = "";
     this.threads = 1;
     this.hash = 512;
+
+    this.child.stderr.on('data', (data) => {
+      console.log(`stderr: ${data}`);
+    });
+
+    this.child.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
   }
 
   on(handler, callback) {
@@ -21,31 +29,37 @@ class EngineInterface {
     this.threads = Number(threads);
   }
 
-  setHash(size) {
+  setHashSize(size) {
+    console.log("setHashSize", Number(size));
     this.hash = Number(size);
   }
 
   setSyzygyPath(syzygyPath) {
-    this.syzygyPath = syzygyPath;
+    this.syzygyPath = `${syzygyPath}`;
   }
 
   setDelay(delay) {
-    console.log('setDelay', delay);
+    console.log("setDelay", delay);
     this.delay = delay;
   }
 
   setMultiPv(multiPv) {
-    // console.log('setMultiPv');
     this.multiPv = multiPv;
     this.send(`setoption name multipv value ${multiPv}`);
   }
 
-  findBestMove(fen, userId) {
+  setPosition(fen) {
     this.fen = fen;
-    this.userId = userId;
     this.send(`position fen ${fen}`);
+  }
+
+  go() {
     this.send(`go movetime ${this.delay}`);
-    this.send(`d`);
+    // this.send(`d`);
+  }
+
+  stop() {
+    this.send("stop");
   }
 
   send(cmd) {
@@ -54,10 +68,8 @@ class EngineInterface {
   }
 
   prepare(result) {
-    console.log('prepare->result', result);
     const obj = tools.parseResult(result);
     if (obj && obj[0]) {
-      obj[0].userId = this.userId;
       obj[0].fen = this.fen;
     }
 
@@ -65,22 +77,23 @@ class EngineInterface {
   }
 
   initEngine() {
-    this.send('uci');
-    this.send('eval');
-    this.send('isready');
-    this.send('ucinewgame');
+    this.send("uci");
+    this.send("eval");
+    this.send("isready");
+    // this.send("ucinewgame");
     this.send(`setoption name Threads value ${this.threads}`);
     this.send(`setoption name Hash value ${this.hash}`);
-    this.send(`setoption name UCI_AnalyseMode value true`);
-    if (this.syzygyPath !== '') {
+    // this.send(`setoption name UCI_AnalyseMode value true`);
+    if (this.syzygyPath !== "") {
       this.send(`setoption name SyzygyPath value ${this.syzygyPath}`);
     }
-    this.send('setoption name ownbook value false');
+    this.send("setoption name ownbook value false");
+    this.send("setoption name Ponder value false");
     this.setMultiPv(this.multiPv);
   }
 
   killEngine() {
-    this.child.kill(9);
+    this.child.kill("SIGINT");
   }
 }
 
