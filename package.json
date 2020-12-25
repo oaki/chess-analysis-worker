@@ -1,30 +1,42 @@
 {
   "name": "chess-analysis-worker",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Free online chess analysis worker",
   "author": "Pavol Bincik",
   "license": "MIT",
   "homepage": "https://github.com/oaki/chess-analysis-worker",
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
   "scripts": {
-    "worker:start": "node src/socketWorker.js",
+    "worker:start": "node -r dotenv/config build/index.js",
+    "run": "node -r dotenv/config build/index.js",
+    "transpile": "babel ./src --out-dir build",
     "git:update": "git pull",
     "test": "git pull",
     "stockfish:download": "rm -rf Stockfish && git clone https://github.com/official-stockfish/Stockfish.git",
     "stockfish:make": "cd ./Stockfish/src/; make build ARCH=x86-64",
-    "stockfish:copy": "cp ./Stockfish/src/stockfish ./src/",
+    "stockfish:copy": "cp ./Stockfish/src/stockfish ./build/",
     "stockfish:install": "npm run stockfish:download && npm run stockfish:make && npm run stockfish:copy"
   },
   "dependencies": {
-    "dotenv": "^5.0.1",
+    "dotenv": "^8.2.0",
     "lodash": "^4.17.20",
-    "socket.io-client": "^2.1.1",
-    "uuid": "^3.2.1"
+    "nodemon": "^2.0.6",
+    "rimraf": "^3.0.2",
+    "socket.io-client": "^3.0.4",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "eslint": "^4.16.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.6.1"
+    "cpx": "^1.5.0",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1"
   }
 }
