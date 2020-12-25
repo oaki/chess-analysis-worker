@@ -1,10 +1,12 @@
+import debounce from "lodash/debounce";
+import {io} from "socket.io-client";
 import {config} from "./config";
 import {createUuid} from "./createUuid";
-import * as Engine from './engine';
-import debounce from 'lodash/debounce';
-import { io } from 'socket.io-client';
+import * as Engine from "./engine";
 
 console.log("config.api.host", config.api.host);
+console.log("config.api.syzygyPath", config.api.syzygyPath);
+
 function init() {
   const socket = io(config.api.host, {
     query: {
@@ -37,7 +39,7 @@ function init() {
       }
     });
     socket.on("isReady", (uuid) => {
-      console.log("workerIsReady->isReady");
+      console.log("workerIsReady->isReady", uuid);
       socket.emit("workerIsReady", uuid);
     });
 
@@ -58,7 +60,6 @@ function init() {
 
   socket.on("disconnect", function (e) {
     console.log("disconnect", e);
-    // Engine.killEngine();
   });
 }
 
