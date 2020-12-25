@@ -28,7 +28,7 @@ const LINE_MAP = {
 
 function parseLine(lineStr) {
   const obj = {};
-  console.log("lineStr->", lineStr);
+  // console.log("lineStr->", lineStr);
   obj[LINE_MAP.mate] = pairValues("mate", lineStr); // mate
   obj[LINE_MAP.score] = parseFloat(pairValues("cp", lineStr)) / 100; //score
   obj[LINE_MAP.depth] = pairValues("depth", lineStr);
@@ -39,7 +39,7 @@ function parseLine(lineStr) {
   obj[LINE_MAP.nps] = pairValues("nps", lineStr);
   obj[LINE_MAP.tbhits] = pairValues("tbhits", lineStr);
 
-  console.log("lineStr->Obj", obj);
+  // console.log("lineStr->Obj", obj);
   return obj;
 }
 

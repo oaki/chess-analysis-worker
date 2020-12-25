@@ -1,12 +1,14 @@
 const fs = require("fs");
-const uuidv4 = require("uuid/v4");
+import { v4 as uuidv4 } from 'uuid';
+
+// import * as uuidv4 from 'uuid/dist/v4';
 
 const id = (process.env && process.env.ID) || 0;
 const path = `${__dirname}/uuid-${Number(id)}.js`;
 
-
-module.exports = function createUuid() {
+export function createUuid() {
   let uuid = uuidv4();
+
   if (fs.existsSync(path)) {
     console.log("uuid loaded: ", uuid);
     uuid = require(path);
@@ -18,5 +20,5 @@ module.exports = function createUuid() {
   }
 
   return uuid;
-};
+}
 

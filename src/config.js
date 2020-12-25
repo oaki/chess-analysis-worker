@@ -1,6 +1,6 @@
 const DEVELOPMENT = "development";
 const PRODUCTION = "production";
-const config = {
+export const config = {
   environment: process.env.APP_ENVIRONMENT === DEVELOPMENT ? DEVELOPMENT : PRODUCTION,
   api: {
     host: process.env.API_HOST
@@ -9,5 +9,3 @@ const config = {
   maxTime: process.env.MAX_TIME,
   syzygyPath: process.env.SYZYGY_PATH,
 };
-
-module.exports = config;
