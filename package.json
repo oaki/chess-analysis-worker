@@ -18,7 +18,7 @@
     "test": "git pull",
     "stockfish:download": "rm -rf Stockfish && git clone https://github.com/official-stockfish/Stockfish.git && npm run stockfish:checkoutTag",
     "stockfish:checkoutTag": "cd Stockfish && git checkout tags/sf_12",
-    "stockfish:make": "cd ./Stockfish/src/; make build ARCH=x86-64",
+    "stockfish:make": "cd ./Stockfish/src/; make build ARCH=x86-64-modern",
     "stockfish:copy": "cp ./Stockfish/src/stockfish ./build/",
     "stockfish:install": "npm run stockfish:download && npm run stockfish:make && npm run stockfish:copy"
   },
