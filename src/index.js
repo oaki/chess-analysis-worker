@@ -28,7 +28,10 @@ function init() {
     }, 200);
 
     Engine.initEngine({
-      delay: 120 * 1000
+      delay: 120 * 1000,
+      hash: config.hashSize,
+      syzygyPath: config.syzygyPath,
+      threads: config.threads,
     });
 
     Engine.on("data", (buffer) => {
