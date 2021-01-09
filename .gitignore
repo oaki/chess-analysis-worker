@@ -13,3 +13,5 @@
 .idea/workspace.xml
 Stockfish/
 node_modules/
+.env
+syzygy/
