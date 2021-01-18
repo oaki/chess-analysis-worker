@@ -4,8 +4,7 @@ import {config} from "./config";
 import {createUuid} from "./createUuid";
 import * as Engine from "./engine";
 
-console.log("config.api.host", config.api.host);
-console.log("config.api.syzygyPath", config.api.syzygyPath);
+console.log("config", config);
 
 function init() {
   const socket = io(config.api.host, {
