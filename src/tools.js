@@ -24,6 +24,7 @@ const LINE_MAP = {
   time: "t",
   nps: "c",
   tbhits: "h",
+  wdl: "w",
 };
 
 function parseLine(lineStr) {
@@ -38,6 +39,11 @@ function parseLine(lineStr) {
   obj[LINE_MAP.time] = pairValues("time", lineStr);
   obj[LINE_MAP.nps] = pairValues("nps", lineStr);
   obj[LINE_MAP.tbhits] = pairValues("tbhits", lineStr);
+  const fields = lineStr.split(" ");
+  const wdlPosition = fields.indexOf("wdl");
+  if (wdlPosition !== -1) {
+    obj[LINE_MAP.wdl] = fields.slice(wdlPosition + 1, wdlPosition + 4).join(" ");
+  }
 
   // console.log("lineStr->Obj", obj);
   return obj;

@@ -65,6 +65,7 @@ function initEngine(options = {}) {
   send("isready");
   send(`setoption name Threads value ${options.threads || defaultOptions.threads}`);
   send(`setoption name Hash value ${options.hash || defaultOptions.hash}`);
+  send("setoption name UCI_ShowWDL value true");
   // this.send(`setoption name UCI_AnalyseMode value true`);
   if (options.syzygyPath  !== "") {
     send(`setoption name SyzygyPath value ${options.syzygyPath}`);
